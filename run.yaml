@@ -1,0 +1,74 @@
+version: 2
+distro_name: lls-openai
+
+apis:
+  - inference
+
+providers:
+  inference:
+    - provider_id: openai
+      provider_type: remote::passthrough
+      config:
+        base_url: https://api.openai.com
+    - provider_id: openai-mini
+      provider_type: remote::passthrough
+      config:
+        base_url: https://api.openai.com
+    - provider_id: gemini
+      provider_type: remote::passthrough
+      config:
+        base_url: https://generativelanguage.googleapis.com/v1beta/openai
+    - provider_id: anthropic
+      provider_type: remote::passthrough
+      config:
+        base_url: https://api.anthropic.com
+
+storage:
+  backends:
+    kv_default:
+      type: kv_sqlite
+      db_path: ${env.HOME}/.llama/distributions/lls-openai/kvstore.db
+    sql_default:
+      type: sql_sqlite
+      db_path: ${env.HOME}/.llama/distributions/lls-openai/sql_store.db
+  stores:
+    metadata:
+      namespace: registry
+      backend: kv_default
+    inference:
+      table_name: inference_store
+      backend: sql_default
+    conversations:
+      table_name: openai_conversations
+      backend: sql_default
+
+registered_resources:
+  models:
+    - provider_id: openai
+      model_id: gpt-4o
+      model_type: llm
+      metadata:
+        display_name: GPT-4o
+    - provider_id: openai-mini
+      model_id: gpt-4o-mini
+      model_type: llm
+      metadata:
+        display_name: GPT-4o Mini
+    - provider_id: openai-mini
+      model_id: gpt-4.1-nano
+      model_type: llm
+      metadata:
+        display_name: GPT-4.1 Nano
+    - provider_id: gemini
+      model_id: gemini-2.5-flash-lite
+      model_type: llm
+      metadata:
+        display_name: Gemini 2.5 Flash Lite
+    - provider_id: anthropic
+      model_id: claude-haiku-4-5-20251001
+      model_type: llm
+      metadata:
+        display_name: Claude Haiku 4.5
+
+server:
+  port: 8321
