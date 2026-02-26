@@ -107,6 +107,32 @@ curl -s -N http://localhost:8321/v1/chat/completions \
   }'
 ```
 
+## Embeddings (OpenAI)
+
+```bash
+curl -s http://localhost:8321/v1/embeddings \
+  -H "Content-Type: application/json" \
+  -H "X-LlamaStack-Provider-Data: {\"passthrough_api_key\": \"$OPENAI_API_KEY\", \"passthrough_url\": \"https://api.openai.com\"}" \
+  -d '{
+    "model": "openai/text-embedding-3-small",
+    "input": "Hello, this is a test sentence for embeddings"
+  }' | jq '.'
+```
+
+## Embeddings (Gemini)
+
+```bash
+curl -s http://localhost:8321/v1/embeddings \
+  -H "Content-Type: application/json" \
+  -H "X-LlamaStack-Provider-Data: {\"passthrough_api_key\": \"$GEMINI_API_KEY\", \"passthrough_url\": \"https://generativelanguage.googleapis.com/v1beta/openai\"}" \
+  -d '{
+    "model": "gemini/gemini-embedding-001",
+    "input": "Hello, this is a test sentence for embeddings"
+  }' | jq '.'
+```
+
+**Note:** Gemini embeddings currently fail due to `remote::passthrough` being a pure proxy. Gemini's OpenAI-compatible endpoint response is missing required fields (`index` and `usage`), causing validation errors. OpenAI embeddings work because they include all expected fields.
+
 ## Python client
 
 ```bash

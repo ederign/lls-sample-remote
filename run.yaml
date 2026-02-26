@@ -45,6 +45,18 @@ storage:
 registered_resources:
   models:
     - provider_id: openai
+      model_id: text-embedding-3-small
+      model_type: embedding
+      metadata:
+        display_name: OpenAI Text Embedding 3 Small
+        embedding_dimension: 1536
+    - provider_id: gemini
+      model_id: gemini-embedding-001
+      model_type: embedding
+      metadata:
+        display_name: Gemini Embedding Model
+        embedding_dimension: 768
+    - provider_id: openai
       model_id: gpt-4o
       model_type: llm
       metadata:
